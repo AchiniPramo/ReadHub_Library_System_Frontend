@@ -7,8 +7,12 @@ interface TableProps<T> {
     onDelete?: (item: T) => void;
 }
 
-const Table = <T extends { id: string }>({ data, columns, onEdit, onDelete }: TableProps<T>) => {
-    const renderCell = (item: T, col: { key: keyof T | 'actions'; header: string; render?: (item: T) => React.ReactNode }) => {
+const Table = <T extends { id: string }>({data, columns, onEdit, onDelete}: TableProps<T>) => {
+    const renderCell = (item: T, col: {
+        key: keyof T | 'actions';
+        header: string;
+        render?: (item: T) => React.ReactNode
+    }) => {
         if (col.render) {
             return col.render(item);
         }

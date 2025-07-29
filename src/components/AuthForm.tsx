@@ -1,13 +1,13 @@
 import {useState} from "react";
-import { Input } from "./Input";
-import { Button } from "./Button";
+import {Input} from "./Input";
+import {Button} from "./Button";
 
 interface AuthFormProps {
     type: 'login' | 'signup';
     onSubmit: (data: any) => void;
 }
 
-const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {
+const AuthForm: React.FC<AuthFormProps> = ({type, onSubmit}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
@@ -18,7 +18,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ type, onSubmit }) => {
             console.error("Passwords do not match!");
             return;
         }
-        onSubmit({ email, password });
+        onSubmit({email, password});
     };
 
     return (

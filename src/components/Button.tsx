@@ -6,15 +6,15 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     children: React.ReactNode;
 }
 
-export const Button: React.FC<ButtonProps> = ({ 
-    variant = 'primary', 
-    size = 'md', 
-    children, 
-    className, 
-    ...props 
-}) => {
+export const Button: React.FC<ButtonProps> = ({
+                                                  variant = 'primary',
+                                                  size = 'md',
+                                                  children,
+                                                  className,
+                                                  ...props
+                                              }) => {
     const baseStyle = 'rounded-md font-semibold transition duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-offset-2';
-    
+
     // Size styles
     let sizeStyle = '';
     switch (size) {
@@ -47,8 +47,8 @@ export const Button: React.FC<ButtonProps> = ({
     }
 
     return (
-        <button 
-            className={`${baseStyle} ${sizeStyle} ${variantStyle} ${className || ''}`} 
+        <button
+            className={`${baseStyle} ${sizeStyle} ${variantStyle} ${className || ''}`}
             {...props}
         >
             {children}
