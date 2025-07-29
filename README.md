@@ -1,4 +1,4 @@
-# 📚 ReadHub – Online Library Management System (Frontend)
+# 📚 ReadHub – Library System (Frontend)
 
 **ReadHub** is a user-friendly and responsive web interface for managing library operations effectively. Built with **React**, **TypeScript**, and **Tailwind CSS**, this frontend allows authorized library staff to handle books, readers, lending processes, and monitor overdue books through a modern dashboard.
 
