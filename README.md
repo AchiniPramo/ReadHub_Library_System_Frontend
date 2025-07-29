@@ -1,69 +1,93 @@
-# React + TypeScript + Vite
+# 📚 ReadHub – Online Library Management System (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**ReadHub** is a user-friendly and responsive web interface for managing library operations effectively. Built with **React**, **TypeScript**, and **Tailwind CSS**, this frontend allows authorized library staff to handle books, readers, lending processes, and monitor overdue books through a modern dashboard.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+- 🔐 **JWT Authentication** – Secure login for staff members.
+- 📖 **Book Management** – Add, update, and delete books.
+- 👤 **Reader Management** – Manage reader profiles and borrowing activity.
+- 📅 **Lending System** – Issue, return, and track borrowed books.
+- 🛎️ **Overdue Alerts** – Visual indicators for late returns.
+- 📊 **Admin Dashboard** – Insights into current library status.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🛠️ Tech Stack
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+| Layer         | Technology                  |
+|---------------|------------------------------|
+| Frontend      | React, TypeScript            |
+| Styling       | Tailwind CSS                 |
+| State Mgmt    | React Hooks / Context API    |
+| API Calls     | Axios                        |
+| Charts        | Recharts / Chart.js          |
+| Routing       | React Router DOM             |
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 📦 Getting Started
+
+### 1. Clone the Repository
+
+```bash
+https://github.com/AchiniPramo/ReadHub_Online_Library_System_Backend-.git
+
+````
+
+### 2. Install Dependencies
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 3. Configure Environment
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Create a `.env` file in the root directory:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_BASE_URL=http://localhost:3000/api
 ```
+
+*Replace the URL if your backend runs on a different port or domain.*
+
+### 4. Run the App
+
+```bash
+npm run dev
+```
+
+Visit the app at: [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🧾 Project Structure
+
+```
+src/
+├── assets/           # Images and icons
+├── components/       # Reusable components (Navbar, Sidebar, FormInput, etc.)
+├── pages/            # Main pages (Login, Dashboard, Books, Readers)
+├── services/         # Axios API service handlers
+├── context/          # Auth & global state context
+├── utils/            # Helper functions
+└── App.tsx           # Application root
+```
+
+---
+
+## 🔐 Authentication & Authorization
+
+* Secure login via backend-issued **JWT tokens**
+* Role-based route access
+* Persistent login with token storage
+
+---
+
+## 🤝 Contributing
+
+If you'd like to improve or extend the project, feel free to fork and open a pull request.
+
+---
