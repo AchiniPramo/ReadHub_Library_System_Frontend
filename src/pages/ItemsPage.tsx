@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from "../components/Button.tsx";
-import { Modal } from '../components/Modal.tsx';
-import { Input } from '../components/Input.tsx';
+import React, {useState, useEffect} from 'react';
+import {Button} from "../components/Button.tsx";
+import {Modal} from '../components/Modal.tsx';
+import {Input} from '../components/Input.tsx';
 import Table from "../components/Table.tsx";
-import type { Book } from "../types/index.ts";
+import type {Book} from "../types/index.ts";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { addBook, deleteBook, getAllBooks, updateBook } from "../services/bookService.ts";
+import {addBook, deleteBook, getAllBooks, updateBook} from "../services/bookService.ts";
 
 const ItemsPage: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);
@@ -58,27 +58,27 @@ const ItemsPage: React.FC = () => {
     // Filter books based on search term and status
     const filteredBooks = books.filter(book => {
         const matchesSearch = book.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                            book.isbn.toLowerCase().includes(searchTerm.toLowerCase());
-        
-        const matchesStatus = statusFilter === 'all' || 
-                            (statusFilter === 'available' && book.status) ||
-                            (statusFilter === 'unavailable' && !book.status);
-        
+            book.author.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            book.isbn.toLowerCase().includes(searchTerm.toLowerCase());
+
+        const matchesStatus = statusFilter === 'all' ||
+            (statusFilter === 'available' && book.status) ||
+            (statusFilter === 'unavailable' && !book.status);
+
         return matchesSearch && matchesStatus;
     });
 
     const columns = [
-        { key: 'title' as keyof Book, header: 'Title' },
-        { key: 'author' as keyof Book, header: 'Author' },
-        { key: 'isbn' as keyof Book, header: 'ISBN' },
+        {key: 'title' as keyof Book, header: 'Title'},
+        {key: 'author' as keyof Book, header: 'Author'},
+        {key: 'isbn' as keyof Book, header: 'ISBN'},
         {
             key: 'available' as keyof Book,
             header: 'Status',
             render: (book: Book) => (
                 <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${
                     book.status
-                        ? 'bg-green-100 text-green-800' 
+                        ? 'bg-green-100 text-green-800'
                         : 'bg-red-100 text-red-800'
                 }`}>
                     {book.status ? 'Available' : 'Checked Out'}
@@ -90,16 +90,16 @@ const ItemsPage: React.FC = () => {
             header: 'Actions',
             render: (book: Book) => (
                 <div className="space-x-2">
-                    <Button 
-                        variant="secondary" 
+                    <Button
+                        variant="secondary"
                         onClick={() => handleEditBook(book)}
                         disabled={isSubmitting}
                         size="sm"
                     >
                         Edit
                     </Button>
-                    <Button 
-                        variant="danger" 
+                    <Button
+                        variant="danger"
                         onClick={() => handleDeleteBook(book)}
                         disabled={isSubmitting}
                         size="sm"
@@ -137,13 +137,13 @@ const ItemsPage: React.FC = () => {
     const handleToggleAvailability = async (book: Book) => {
         try {
             setIsSubmitting(true);
-            const updatedBookData = { ...book, available: !book.status };
+            const updatedBookData = {...book, available: !book.status};
             const updatedBook = await updateBook(book.id, updatedBookData);
             setBooks((prev) =>
                 prev.map((b) => (b.id === book.id ? updatedBook : b))
             );
             toast.success(book.status
-                 ? "Book checked out successfully" : "Book returned successfully");
+                ? "Book checked out successfully" : "Book returned successfully");
         } catch (error) {
             if (axios.isAxiosError(error)) {
                 toast.error(error.response?.data?.message || error.message);
@@ -161,7 +161,7 @@ const ItemsPage: React.FC = () => {
 
         try {
             const formData = new FormData(e.currentTarget);
-            const bookData: Omit<Book, 'id' > = {
+            const bookData: Omit<Book, 'id'> = {
                 title: formData.get('title') as string,
                 author: formData.get('author') as string,
                 isbn: formData.get('isbn') as string,
@@ -241,7 +241,7 @@ const ItemsPage: React.FC = () => {
                         <h1 className="text-3xl font-bold text-gray-800">Book Management</h1>
                         <p className="text-gray-600 mt-1">Manage your library collection</p>
                     </div>
-                    <Button 
+                    <Button
                         onClick={handleAddBook}
                         disabled={isSubmitting}
                         className="flex items-center space-x-2"
@@ -309,33 +309,33 @@ const ItemsPage: React.FC = () => {
                                 Showing {filteredBooks.length} of {books.length} books
                             </p>
                         </div>
-                        <Table data={filteredBooks} columns={columns} />
+                        <Table data={filteredBooks} columns={columns}/>
 
                     </div>
                 </div>
 
                 {/* Add Book Modal */}
-                <Modal 
-                    isOpen={isAddModalOpen} 
-                    onClose={cancelModal} 
+                <Modal
+                    isOpen={isAddModalOpen}
+                    onClose={cancelModal}
                     title="Add New Book"
                 >
                     <form onSubmit={handleFormSubmit} className="space-y-4">
-                        <Input 
-                            label="Title" 
-                            name="title" 
-                            required 
+                        <Input
+                            label="Title"
+                            name="title"
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Author" 
-                            name="author" 
-                            required 
+                        <Input
+                            label="Author"
+                            name="author"
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="ISBN" 
-                            name="isbn" 
+                        <Input
+                            label="ISBN"
+                            name="isbn"
                             disabled={isSubmitting}
                         />
                         <div className="flex items-center">
@@ -349,23 +349,21 @@ const ItemsPage: React.FC = () => {
                             />
 
 
-
-
                             <label htmlFor="available" className="ml-2 block text-sm text-gray-900">
                                 Available for checkout
                             </label>
                         </div>
                         <div className="flex justify-end space-x-2 mt-6">
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
+                            <Button
+                                type="button"
+                                variant="secondary"
                                 onClick={cancelModal}
                                 disabled={isSubmitting}
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                type="submit" 
+                            <Button
+                                type="submit"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? 'Adding...' : 'Add Book'}
@@ -375,35 +373,32 @@ const ItemsPage: React.FC = () => {
                 </Modal>
 
                 {/* Edit Book Modal */}
-                <Modal 
-                    isOpen={isEditModalOpen} 
-                    onClose={cancelModal} 
+                <Modal
+                    isOpen={isEditModalOpen}
+                    onClose={cancelModal}
                     title="Edit Book"
                 >
                     <form onSubmit={handleFormSubmit} className="space-y-4">
-                        <Input 
-                            label="Title" 
-                            name="title" 
-                            defaultValue={selectedBook?.title || ''} 
-                            required 
+                        <Input
+                            label="Title"
+                            name="title"
+                            defaultValue={selectedBook?.title || ''}
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Author" 
-                            name="author" 
+                        <Input
+                            label="Author"
+                            name="author"
 
 
-
-
-
-                            defaultValue={selectedBook?.author || ''} 
-                            required 
+                            defaultValue={selectedBook?.author || ''}
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="ISBN" 
-                            name="isbn" 
-                            defaultValue={selectedBook?.isbn || ''} 
+                        <Input
+                            label="ISBN"
+                            name="isbn"
+                            defaultValue={selectedBook?.isbn || ''}
                             disabled={isSubmitting}
                         />
                         <div className="flex items-center">
@@ -420,16 +415,16 @@ const ItemsPage: React.FC = () => {
                             </label>
                         </div>
                         <div className="flex justify-end space-x-2 mt-6">
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
+                            <Button
+                                type="button"
+                                variant="secondary"
                                 onClick={cancelModal}
                                 disabled={isSubmitting}
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                type="submit" 
+                            <Button
+                                type="submit"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? 'Updating...' : 'Save Changes'}
@@ -439,27 +434,28 @@ const ItemsPage: React.FC = () => {
                 </Modal>
 
                 {/* Delete Confirmation Modal */}
-                <Modal 
-                    isOpen={isDeleteModalOpen} 
-                    onClose={cancelModal} 
+                <Modal
+                    isOpen={isDeleteModalOpen}
+                    onClose={cancelModal}
                     title="Delete Book"
                 >
                     <div className="space-y-4">
                         <p className="text-gray-700">
-                            Are you sure you want to delete <strong>"{selectedBook?.title}"</strong> by {selectedBook?.author}? 
+                            Are you sure you want to
+                            delete <strong>"{selectedBook?.title}"</strong> by {selectedBook?.author}?
                             This action cannot be undone.
                         </p>
                         <div className="flex justify-end space-x-2 mt-6">
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
+                            <Button
+                                type="button"
+                                variant="secondary"
                                 onClick={cancelModal}
                                 disabled={isSubmitting}
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                variant="danger" 
+                            <Button
+                                variant="danger"
                                 onClick={confirmDelete}
                                 disabled={isSubmitting}
                             >

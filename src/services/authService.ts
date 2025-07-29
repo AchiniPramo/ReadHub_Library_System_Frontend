@@ -1,4 +1,4 @@
-import type { User } from "../types/User"
+import type {User} from "../types/User"
 import apiClient from "./apiClient"
 
 export interface SignUpResponse {

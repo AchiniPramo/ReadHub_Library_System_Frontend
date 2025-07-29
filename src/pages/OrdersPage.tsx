@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { Button } from "../components/Button.tsx";
-import { Modal } from "../components/Modal.tsx";
-import { Input } from '../components/Input.tsx';
+import React, {useState, useEffect} from 'react';
+import {Button} from "../components/Button.tsx";
+import {Modal} from "../components/Modal.tsx";
+import {Input} from '../components/Input.tsx';
 import Table from "../components/Table.tsx";
-import type { LendingTransaction,DropdownItem } from "../types/index.ts";
+import type {LendingTransaction, DropdownItem} from "../types/index.ts";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { 
-    getAllLendingTransactions, 
-    deleteLendingTransaction, 
-    addLendingTransaction, 
-    updateLendingTransaction 
+import {
+    getAllLendingTransactions,
+    deleteLendingTransaction,
+    addLendingTransaction,
+    updateLendingTransaction
 } from "../services/lendingService.ts";
 
 // Assume you have these types defined, or define them simply if not.
@@ -30,9 +30,9 @@ import {
 
 // You'll need services to fetch readers and books
 // For example, in `src/services/readerService.ts` and `src/services/bookService.ts`
-import { getAllReaders } from "../services/readerService.ts"; 
-import { getAllBooks } from "../services/bookService.ts";
-import { sendOverdueNotification } from "../services/notificationService.ts";
+import {getAllReaders} from "../services/readerService.ts";
+import {getAllBooks} from "../services/bookService.ts";
+import {sendOverdueNotification} from "../services/notificationService.ts";
 
 // Define simplified types if you haven't already in your `types` file
 // It's good practice to have distinct types for full objects vs. their dropdown representation
@@ -176,26 +176,30 @@ const OrdersPage: React.FC = () => {
         // We'll need to enhance search if we want to search by book title or reader name
         // For now, it searches by the ID string as before.
         const matchesSearch = transaction.bookId.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                               transaction.readerId.toLowerCase().includes(searchTerm.toLowerCase());
-        
+            transaction.readerId.toLowerCase().includes(searchTerm.toLowerCase());
+
         const transactionStatus = getTransactionStatus(transaction);
         const matchesStatus = statusFilter === 'all' || transactionStatus === statusFilter;
-        
+
         return matchesSearch && matchesStatus;
     });
 
     const columns = [
         // Update column headers if you plan to display names/titles
-        { key: 'bookId' as keyof LendingTransaction, header: 'Book ID', render: (t: LendingTransaction) => {
-            const book = books.find(b => b._id === t.bookId);
-            return book ? book.title : t.bookId; // Display title if found, otherwise ID
-        }},
-        { key: 'readerId' as keyof LendingTransaction, header: 'Reader ID', render: (t: LendingTransaction) => {
-            const reader = readers.find(r => r._id === t.readerId);
-            return reader ? reader.name : t.readerId; // Display name if found, otherwise ID
-        }},
-        { key: 'lendDate' as keyof LendingTransaction, header: 'Lend Date' },
-        { key: 'dueDate' as keyof LendingTransaction, header: 'Due Date' },
+        {
+            key: 'bookId' as keyof LendingTransaction, header: 'Book ID', render: (t: LendingTransaction) => {
+                const book = books.find(b => b._id === t.bookId);
+                return book ? book.title : t.bookId; // Display title if found, otherwise ID
+            }
+        },
+        {
+            key: 'readerId' as keyof LendingTransaction, header: 'Reader ID', render: (t: LendingTransaction) => {
+                const reader = readers.find(r => r._id === t.readerId);
+                return reader ? reader.name : t.readerId; // Display name if found, otherwise ID
+            }
+        },
+        {key: 'lendDate' as keyof LendingTransaction, header: 'Lend Date'},
+        {key: 'dueDate' as keyof LendingTransaction, header: 'Due Date'},
         {
             key: 'returnDate' as keyof LendingTransaction,
             header: 'Return Date',
@@ -212,7 +216,8 @@ const OrdersPage: React.FC = () => {
                     overdue: 'bg-red-100 text-red-800'
                 };
                 return (
-                    <span className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[status]}`}>
+                    <span
+                        className={`px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full ${statusColors[status]}`}>
                         {status.charAt(0).toUpperCase() + status.slice(1)}
                     </span>
                 );
@@ -224,8 +229,8 @@ const OrdersPage: React.FC = () => {
             render: (t: LendingTransaction) => (
                 <div className="space-x-2">
                     {!t.returnDate && (
-                        <Button 
-                            variant="primary" 
+                        <Button
+                            variant="primary"
                             onClick={() => handleMarkReturned(t)}
                             disabled={isSubmitting}
                             size="sm"
@@ -233,16 +238,16 @@ const OrdersPage: React.FC = () => {
                             Mark Returned
                         </Button>
                     )}
-                    <Button 
-                        variant="secondary" 
+                    <Button
+                        variant="secondary"
                         onClick={() => handleEdit(t)}
                         disabled={isSubmitting}
                         size="sm"
                     >
                         Edit
                     </Button>
-                    <Button 
-                        variant="danger" 
+                    <Button
+                        variant="danger"
                         onClick={() => handleDeleteTransaction(t)}
                         disabled={isSubmitting}
                         size="sm"
@@ -291,9 +296,9 @@ const OrdersPage: React.FC = () => {
                 dueDate: transaction.dueDate,
                 returnDate: new Date().toISOString().split('T')[0] // Set current date as return date
             };
-            
+
             const updatedTransaction = await updateLendingTransaction(transaction.id, updatedTransactionData);
-            setTransactions(prev => 
+            setTransactions(prev =>
                 prev.map(t => t.id === transaction.id ? updatedTransaction : t)
             );
             toast.success("Book marked as returned successfully");
@@ -401,7 +406,7 @@ const OrdersPage: React.FC = () => {
                         <h1 className="text-3xl font-bold text-gray-800">Lending Management</h1>
                         <p className="text-gray-600 mt-1">Manage book lending transactions</p>
                     </div>
-                    <Button 
+                    <Button
                         onClick={handleAdd}
                         disabled={isSubmitting}
                         className="flex items-center space-x-2"
@@ -468,14 +473,14 @@ const OrdersPage: React.FC = () => {
                                 Showing {filteredTransactions.length} of {transactions.length} transactions
                             </p>
                         </div>
-                        <Table data={filteredTransactions} columns={columns} />
+                        <Table data={filteredTransactions} columns={columns}/>
                     </div>
                 </div>
 
                 {/* Add Transaction Modal */}
-                <Modal 
-                    isOpen={isAddModalOpen} 
-                    onClose={cancelModal} 
+                <Modal
+                    isOpen={isAddModalOpen}
+                    onClose={cancelModal}
                     title="Add New Lending Record"
                 >
                     <form onSubmit={handleFormSubmit} className="space-y-4">
@@ -529,45 +534,45 @@ const OrdersPage: React.FC = () => {
                                 ))}
                             </select>
                         </div>
-                        
-                        <Input 
-                            label="Lend Date" 
-                            name="lendDate" 
-                            type="date" 
+
+                        <Input
+                            label="Lend Date"
+                            name="lendDate"
+                            type="date"
                             value={formLendDate}
                             onChange={(e) => setFormLendDate(e.target.value)}
-                            required 
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Due Date" 
-                            name="dueDate" 
-                            type="date" 
+                        <Input
+                            label="Due Date"
+                            name="dueDate"
+                            type="date"
                             value={formDueDate}
                             onChange={(e) => setFormDueDate(e.target.value)}
-                            required 
+                            required
                             disabled={isSubmitting}
                         />
                         {/* Return Date can remain an Input as it's optional and may be manually set/edited */}
-                        <Input 
-                            label="Return Date (Optional)" 
-                            name="returnDate" 
-                            type="date" 
+                        <Input
+                            label="Return Date (Optional)"
+                            name="returnDate"
+                            type="date"
                             value={formReturnDate || ''}
                             onChange={(e) => setFormReturnDate(e.target.value || null)}
                             disabled={isSubmitting}
                         />
                         <div className="flex justify-end space-x-2 mt-6">
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
+                            <Button
+                                type="button"
+                                variant="secondary"
                                 onClick={cancelModal}
                                 disabled={isSubmitting}
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                type="submit" 
+                            <Button
+                                type="submit"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? 'Adding...' : 'Add Record'}
@@ -577,13 +582,13 @@ const OrdersPage: React.FC = () => {
                 </Modal>
 
                 {/* Edit Transaction Modal */}
-                <Modal 
-                    isOpen={isEditModalOpen} 
-                    onClose={cancelModal} 
+                <Modal
+                    isOpen={isEditModalOpen}
+                    onClose={cancelModal}
                     title="Edit Lending Record"
                 >
                     <form onSubmit={handleFormSubmit} className="space-y-4">
-                         {/* Book Dropdown for Edit - Prefill with currentTransaction.bookId */}
+                        {/* Book Dropdown for Edit - Prefill with currentTransaction.bookId */}
                         <div>
                             <label htmlFor="edit-book-select" className="block text-sm font-medium text-gray-700 mb-2">
                                 Select Book
@@ -607,7 +612,7 @@ const OrdersPage: React.FC = () => {
                                         // For editing, if the book is the one currently borrowed in THIS transaction,
                                         // it should be selectable. Otherwise, if unavailable by another transaction, it's disabled.
                                         disabled={!book.isAvailable && book._id !== currentTransaction?.bookId}
-                                        style={{ color: (!book.isAvailable && book._id !== currentTransaction?.bookId) ? '#aaa' : 'inherit' }}
+                                        style={{color: (!book.isAvailable && book._id !== currentTransaction?.bookId) ? '#aaa' : 'inherit'}}
                                     >
                                         {book.title} {(!book.isAvailable && book._id !== currentTransaction?.bookId) ? '(Not Available)' : ''}
                                     </option>
@@ -617,7 +622,8 @@ const OrdersPage: React.FC = () => {
 
                         {/* Reader Dropdown for Edit - Prefill with currentTransaction.readerId */}
                         <div>
-                            <label htmlFor="edit-reader-select" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="edit-reader-select"
+                                   className="block text-sm font-medium text-gray-700 mb-2">
                                 Select Reader
                             </label>
                             <select
@@ -637,44 +643,44 @@ const OrdersPage: React.FC = () => {
                                 ))}
                             </select>
                         </div>
-                        
-                        <Input 
-                            label="Lend Date" 
-                            name="lendDate" 
-                            type="date" 
+
+                        <Input
+                            label="Lend Date"
+                            name="lendDate"
+                            type="date"
                             value={formLendDate}
                             onChange={(e) => setFormLendDate(e.target.value)}
-                            required 
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Due Date" 
-                            name="dueDate" 
-                            type="date" 
+                        <Input
+                            label="Due Date"
+                            name="dueDate"
+                            type="date"
                             value={formDueDate}
                             onChange={(e) => setFormDueDate(e.target.value)}
-                            required 
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Return Date" 
-                            name="returnDate" 
-                            type="date" 
+                        <Input
+                            label="Return Date"
+                            name="returnDate"
+                            type="date"
                             value={formReturnDate || ''} // Handle null for returnDate
                             onChange={(e) => setFormReturnDate(e.target.value || null)} // Handle empty string to null
                             disabled={isSubmitting}
                         />
                         <div className="flex justify-end space-x-2 mt-6">
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
+                            <Button
+                                type="button"
+                                variant="secondary"
                                 onClick={cancelModal}
                                 disabled={isSubmitting}
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                type="submit" 
+                            <Button
+                                type="submit"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? 'Updating...' : 'Save Changes'}
@@ -684,29 +690,29 @@ const OrdersPage: React.FC = () => {
                 </Modal>
 
                 {/* Delete Confirmation Modal */}
-                <Modal 
-                    isOpen={isDeleteModalOpen} 
-                    onClose={cancelModal} 
+                <Modal
+                    isOpen={isDeleteModalOpen}
+                    onClose={cancelModal}
                     title="Delete Lending Record"
                 >
                     <div className="space-y-4">
                         <p className="text-gray-700">
-                            Are you sure you want to delete the lending record for 
-                            <strong> Book: {books.find(b => b._id === currentTransaction?.bookId)?.title || currentTransaction?.bookId}</strong> and 
-                            <strong> Reader: {readers.find(r => r._id === currentTransaction?.readerId)?.name || currentTransaction?.readerId}</strong>? 
+                            Are you sure you want to delete the lending record for
+                            <strong> Book: {books.find(b => b._id === currentTransaction?.bookId)?.title || currentTransaction?.bookId}</strong> and
+                            <strong> Reader: {readers.find(r => r._id === currentTransaction?.readerId)?.name || currentTransaction?.readerId}</strong>?
                             This action cannot be undone.
                         </p>
                         <div className="flex justify-end space-x-2 mt-6">
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
+                            <Button
+                                type="button"
+                                variant="secondary"
                                 onClick={cancelModal}
                                 disabled={isSubmitting}
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                variant="danger" 
+                            <Button
+                                variant="danger"
                                 onClick={confirmDelete}
                                 disabled={isSubmitting}
                             >

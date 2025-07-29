@@ -1,17 +1,17 @@
-import { useAuth } from "../context/useAuth";
-import React, {  useEffect } from 'react';
-import { Outlet, useNavigate, useLocation} from 'react-router-dom';
+import {useAuth} from "../context/useAuth";
+import React, {useEffect} from 'react';
+import {Outlet, useNavigate, useLocation} from 'react-router-dom';
 
 
 const AdminRoutes: React.FC = () => {
-    const { isAuthenticated, isAdmin } = useAuth();
+    const {isAuthenticated, isAdmin} = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
 
     useEffect(() => {
         // If not authenticated, redirect to login
         if (!isAuthenticated) {
-            navigate('/login', { replace: true });
+            navigate('/login', {replace: true});
         }
         // If authenticated but not admin (or if we had more granular roles), redirect to a non-admin page or show access denied
         // For this demo, isAuthenticated implies isAdmin
@@ -21,7 +21,7 @@ const AdminRoutes: React.FC = () => {
         return null; // Or a loading spinner, or a "redirecting..." message
     }
 
-    return <Outlet />;
+    return <Outlet/>;
 };
 
 export default AdminRoutes;

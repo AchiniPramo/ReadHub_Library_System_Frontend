@@ -1,12 +1,12 @@
-import type { Reader } from "../types";
-import { Button } from "../components/Button.tsx";
-import React, { useState, useEffect } from "react";
-import { Input } from "../components/Input.tsx"; 
+import type {Reader} from "../types";
+import {Button} from "../components/Button.tsx";
+import React, {useState, useEffect} from "react";
+import {Input} from "../components/Input.tsx";
 import Table from "../components/Table.tsx";
-import { Modal } from "../components/Modal.tsx";
+import {Modal} from "../components/Modal.tsx";
 import axios from "axios";
 import toast from "react-hot-toast";
-import { addReader, deleteReader, getAllReaders, updateReader } from "../services/readerService.ts";
+import {addReader, deleteReader, getAllReaders, updateReader} from "../services/readerService.ts";
 
 const CustomersPage: React.FC = () => {
     const [readers, setReaders] = useState<Reader[]>([]);
@@ -54,24 +54,24 @@ const CustomersPage: React.FC = () => {
     };
 
     const columns = [
-        { key: 'name' as keyof Reader, header: 'Name' },
-        { key: 'email' as keyof Reader, header: 'Email' },
-        { key: 'phone' as keyof Reader, header: 'Phone' },
-        { key: 'address' as keyof Reader, header: 'Address' },
+        {key: 'name' as keyof Reader, header: 'Name'},
+        {key: 'email' as keyof Reader, header: 'Email'},
+        {key: 'phone' as keyof Reader, header: 'Phone'},
+        {key: 'address' as keyof Reader, header: 'Address'},
         {
             key: 'actions' as const,
             header: 'Actions',
             render: (reader: Reader) => (
                 <div className="space-x-2">
-                    <Button 
-                        variant="secondary" 
+                    <Button
+                        variant="secondary"
                         onClick={() => handleEditReader(reader)}
                         disabled={isSubmitting}
                     >
                         Edit
                     </Button>
-                    <Button 
-                        variant="danger" 
+                    <Button
+                        variant="danger"
                         onClick={() => handleDeleteReader(reader)}
                         disabled={isSubmitting}
                     >
@@ -181,7 +181,7 @@ const CustomersPage: React.FC = () => {
                         <h1 className="text-3xl font-bold text-gray-800">Reader Management</h1>
                         <p className="text-gray-600 mt-1">Manage your library readers</p>
                     </div>
-                    <Button 
+                    <Button
                         onClick={handleAddReader}
                         disabled={isSubmitting}
                         className="flex items-center space-x-2"
@@ -210,51 +210,51 @@ const CustomersPage: React.FC = () => {
                 <div className="bg-white rounded-lg shadow">
                     <div className="p-6">
                         <h2 className="text-xl font-semibold text-gray-800 mb-4">All Readers</h2>
-                        <Table data={readers} columns={columns} />
+                        <Table data={readers} columns={columns}/>
                     </div>
                 </div>
 
                 {/* Add Reader Modal */}
-                <Modal 
-                    isOpen={isAddModalOpen} 
-                    onClose={cancelModal} 
+                <Modal
+                    isOpen={isAddModalOpen}
+                    onClose={cancelModal}
                     title="Add New Reader"
                 >
                     <form onSubmit={handleFormSubmit} className="space-y-4">
-                        <Input 
-                            label="Name" 
-                            name="name" 
-                            required 
+                        <Input
+                            label="Name"
+                            name="name"
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Email" 
-                            name="email" 
-                            type="email" 
-                            required 
+                        <Input
+                            label="Email"
+                            name="email"
+                            type="email"
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Phone" 
-                            name="phone" 
+                        <Input
+                            label="Phone"
+                            name="phone"
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Address" 
-                            name="address" 
+                        <Input
+                            label="Address"
+                            name="address"
                             disabled={isSubmitting}
                         />
                         <div className="flex justify-end space-x-2 mt-6">
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
+                            <Button
+                                type="button"
+                                variant="secondary"
                                 onClick={cancelModal}
                                 disabled={isSubmitting}
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                type="submit" 
+                            <Button
+                                type="submit"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? 'Adding...' : 'Add Reader'}
@@ -264,50 +264,50 @@ const CustomersPage: React.FC = () => {
                 </Modal>
 
                 {/* Edit Reader Modal */}
-                <Modal 
-                    isOpen={isEditModalOpen} 
-                    onClose={cancelModal} 
+                <Modal
+                    isOpen={isEditModalOpen}
+                    onClose={cancelModal}
                     title="Edit Reader"
                 >
                     <form onSubmit={handleFormSubmit} className="space-y-4">
-                        <Input 
-                            label="Name" 
-                            name="name" 
-                            defaultValue={selectedReader?.name || ''} 
-                            required 
+                        <Input
+                            label="Name"
+                            name="name"
+                            defaultValue={selectedReader?.name || ''}
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Email" 
-                            name="email" 
-                            type="email" 
-                            defaultValue={selectedReader?.email || ''} 
-                            required 
+                        <Input
+                            label="Email"
+                            name="email"
+                            type="email"
+                            defaultValue={selectedReader?.email || ''}
+                            required
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Phone" 
-                            name="phone" 
-                            defaultValue={selectedReader?.phone || ''} 
+                        <Input
+                            label="Phone"
+                            name="phone"
+                            defaultValue={selectedReader?.phone || ''}
                             disabled={isSubmitting}
                         />
-                        <Input 
-                            label="Address" 
-                            name="address" 
-                            defaultValue={selectedReader?.address || ''} 
+                        <Input
+                            label="Address"
+                            name="address"
+                            defaultValue={selectedReader?.address || ''}
                             disabled={isSubmitting}
                         />
                         <div className="flex justify-end space-x-2 mt-6">
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
+                            <Button
+                                type="button"
+                                variant="secondary"
                                 onClick={cancelModal}
                                 disabled={isSubmitting}
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                type="submit" 
+                            <Button
+                                type="submit"
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? 'Updating...' : 'Save Changes'}
@@ -317,27 +317,27 @@ const CustomersPage: React.FC = () => {
                 </Modal>
 
                 {/* Delete Confirmation Modal */}
-                <Modal 
-                    isOpen={isDeleteModalOpen} 
-                    onClose={cancelModal} 
+                <Modal
+                    isOpen={isDeleteModalOpen}
+                    onClose={cancelModal}
                     title="Delete Reader"
                 >
                     <div className="space-y-4">
                         <p className="text-gray-700">
-                            Are you sure you want to delete <strong>{selectedReader?.name}</strong>? 
+                            Are you sure you want to delete <strong>{selectedReader?.name}</strong>?
                             This action cannot be undone.
                         </p>
                         <div className="flex justify-end space-x-2 mt-6">
-                            <Button 
-                                type="button" 
-                                variant="secondary" 
+                            <Button
+                                type="button"
+                                variant="secondary"
                                 onClick={cancelModal}
                                 disabled={isSubmitting}
                             >
                                 Cancel
                             </Button>
-                            <Button 
-                                variant="danger" 
+                            <Button
+                                variant="danger"
                                 onClick={confirmDelete}
                                 disabled={isSubmitting}
                             >
